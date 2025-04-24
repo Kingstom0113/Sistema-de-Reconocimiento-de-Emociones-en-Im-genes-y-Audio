@@ -1,0 +1,13 @@
+# Dependencias para procesamiento de imágenes y audio
+opencv-python
+librosa
+numpy
+pandas
+
+# Dependencias para aprendizaje profundo
+tensorflow
+keras
+
+# Dependencias adicionales
+scikit-learn
+matplotlib
