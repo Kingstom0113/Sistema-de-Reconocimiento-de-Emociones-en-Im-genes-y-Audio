@@ -1,16 +1,10 @@
-class EmotionModel:
-    def __init__(self):
-        # Initialize the model architecture here
-        pass
+from transformers import pipeline
 
-    def train(self, training_data, labels):
-        # Implement the training logic here
-        pass
-
-    def predict(self, input_data):
-        # Implement the prediction logic here
-        pass
-
-    def evaluate(self, test_data, test_labels):
-        # Implement the evaluation logic here
-        pass
+def analizar_sentimiento_texto(texto):
+    try:
+        clasificador = pipeline("sentiment-analysis", model="nlptown/bert-base-multilingual-uncased-sentiment")
+        resultado = clasificador(texto)[0]
+        return resultado['label'], resultado['score']
+    except Exception as e:
+        print(f"❌ Error al analizar el sentimiento: {e}")
+        return None, None

@@ -1,13 +1,9 @@
-# Dependencias para procesamiento de imágenes y audio
+deepface
 opencv-python
 librosa
+soundfile
 numpy
-pandas
-
-# Dependencias para aprendizaje profundo
-tensorflow
-keras
-
-# Dependencias adicionales
-scikit-learn
 matplotlib
+speechrecognition
+transformers
+torch

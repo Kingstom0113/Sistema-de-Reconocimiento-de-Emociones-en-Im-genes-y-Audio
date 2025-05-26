@@ -1,29 +1,38 @@
-import os
-from images.image_processor import load_image, preprocess_image, detect_faces
-from audio.audio_processor import load_audio, preprocess_audio, extract_features
-from models.emotion_model import EmotionModel
+import sys
+sys.path.append("..")  # Para permitir imports entre módulos
 
-def main():
-    # Load and preprocess images
-    image_files = os.listdir('data/images')
-    for image_file in image_files:
-        image = load_image(os.path.join('data/images', image_file))
-        processed_image = preprocess_image(image)
-        faces = detect_faces(processed_image)
-        # Further processing can be done with detected faces
+from images.image_processor import detectar_emocion_imagen
+from audio.audio_processor import transcribir_audio
+from models.emotion_model import analizar_sentimiento_texto
+from utils.helpers import validar_ruta
 
-    # Load and preprocess audio
-    audio_files = os.listdir('data/audio')
-    for audio_file in audio_files:
-        audio_signal = load_audio(os.path.join('data/audio', audio_file))
-        processed_audio = preprocess_audio(audio_signal)
-        audio_features = extract_features(processed_audio)
-        # Further processing can be done with extracted audio features
+def menu():
+    print("=== Sistema de Reconocimiento de Emociones ===")
+    print("1. Analizar emoción en una imagen facial")
+    print("2. Analizar emoción desde un archivo de voz")
+    opcion = input("Selecciona una opción (1 o 2): ")
 
-    # Initialize and run the emotion detection model
-    model = EmotionModel()
-    # Assuming we have a method to train the model with images and audio features
-    # model.train(training_data)
+    if opcion == "1":
+        ruta = input("Ruta de la imagen: ")
+        if validar_ruta(ruta):
+            emocion = detectar_emocion_imagen(ruta)
+            if emocion:
+                print(f"🧠 Emoción detectada: {emocion}")
+        else:
+            print("❌ Imagen no encontrada.")
+    elif opcion == "2":
+        ruta = input("Ruta del archivo de audio (.wav): ")
+        if validar_ruta(ruta):
+            texto = transcribir_audio(ruta)
+            if texto:
+                print(f"🗣 Transcripción: {texto}")
+                emocion, score = analizar_sentimiento_texto(texto)
+                if emocion:
+                    print(f"🧠 Sentimiento detectado: {emocion} (Confianza: {score:.2f})")
+        else:
+            print("❌ Archivo de audio no encontrado.")
+    else:
+        print("❌ Opción no válida.")
 
 if __name__ == "__main__":
-    main()
+    menu()
